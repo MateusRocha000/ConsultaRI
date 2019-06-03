@@ -60,7 +60,12 @@ public class IndicePreCompModelo{
 	 * @param idx
 	 */
 	private void precomputeValues(Indice idx) {
-
+            numDocumentos = idx.getNumDocumentos();
+            for(String termo : idx.getListTermos())
+            {
+                avgLenPerDocument++;
+            }
+            
 	}
 
 
@@ -98,3 +103,4 @@ public class IndicePreCompModelo{
 	}
 	
 }
+
