@@ -41,31 +41,47 @@ public class IndicePreCompModelo{
 	 * @param oc
 	 */
 	public void updateSumSquaredForNorm(int numDocsTerm, Ocorrencia oc) {
+                double tf = (oc.getFreq() > 0) ? 1 + Math.log10(oc.getFreq()) : 0;
+                double idf = Math.log10(idx.getNumDocumentos()/numDocsTerm);
 		
+                normaPorDocumento.put(oc.getDocId(), normaPorDocumento.get(oc.getDocId()) + Math.pow(tf*idf, 2));
+                
 	}
 	/**
-	 * Atualiza o tamPorDocumento com mais uma cocorrencia 
+	 * Atualiza o tamPorDocumento com mais uma ocorrencia 
 	 * @param oc
 	 */
 	public void updateDocTam(Ocorrencia oc) {
-
-		
+                
 	}
 	/**
 	 * Inicializa os atributos por meio do indice (idx):
 	 * numDocumentos: o numero de documentos que o indice possui
 	 * avgLenPerDocument: média do tamanho (em palavras) dos documentos
 	 * tamPorDocumento: para cada doc id, seu tamanho (em palavras) - use o metodo updateDocTam para auxiliar
-	 * normaPorDocumento: A norma por documento (cada termo é presentado pelo seu peso (tfxidf) - use o metodo updateSumSquaredForNorm para auxiliar
+	 * normaPorDocumento: A norma por documento (cada termo é representado pelo seu peso (tfxidf) - use o metodo updateSumSquaredForNorm para auxiliar
 	 * @param idx
 	 */
 	private void precomputeValues(Indice idx) {
-            numDocumentos = idx.getNumDocumentos();
-            for(String termo : idx.getListTermos())
-            {
-                avgLenPerDocument++;
-            }
             
+            //Inicializa numDocumentos
+            numDocumentos = idx.getNumDocumentos();
+            
+            //Inicializa avgLenPerDocument
+            
+            
+            //Inicializa tamPorDocumento
+            
+                        
+            //Inicializa normaPorDocumento
+            for(String term : idx.getListTermos())
+            {
+                for(Ocorrencia l : idx.getListOccur(term))
+                {
+                    updateSumSquaredForNorm(idx.getNumDocPerTerm().get(term), l);
+                    Math.sqrt(normaPorDocumento.get(l.getDocId()));
+                }
+            }
 	}
 
 
