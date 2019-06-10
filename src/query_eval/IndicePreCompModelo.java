@@ -52,7 +52,7 @@ public class IndicePreCompModelo{
 	 * @param oc
 	 */
 	public void updateDocTam(Ocorrencia oc) {
-                
+                tamPorDocumento.put(oc.getDocId(), tamPorDocumento.get(oc.getDocId()) + 1);
 	}
 	/**
 	 * Inicializa os atributos por meio do indice (idx):
@@ -66,12 +66,20 @@ public class IndicePreCompModelo{
             
             //Inicializa numDocumentos
             numDocumentos = idx.getNumDocumentos();
+            int tam = 0;
             
+            
+            //Atualiza tamPorDocumento
+            for(String term : idx.getListTermos())
+            {
+                for(Ocorrencia l : idx.getListOccur(term))
+                {
+                    updateDocTam(l);
+                    tam++;
+                }
+            }
             //Inicializa avgLenPerDocument
-            
-            
-            //Inicializa tamPorDocumento
-            
+            avgLenPerDocument = tam/numDocumentos;
                         
             //Inicializa normaPorDocumento
             for(String term : idx.getListTermos())
@@ -119,4 +127,5 @@ public class IndicePreCompModelo{
 	}
 	
 }
+
 
